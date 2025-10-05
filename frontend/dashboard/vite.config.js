@@ -16,9 +16,6 @@ export default defineConfig({
     },
   },
   server: {
-    headers: {
-      'Access-Control-Allow-Origin': 'localhost', // или указанный домен
-
-    },
+    cors: true,
   }
 })

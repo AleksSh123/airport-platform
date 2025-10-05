@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, Query, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from typing import Any, Callable, List
@@ -10,6 +11,20 @@ from .models import TaskStatus
 from .schemas import TaskCreate, TaskOut, ScanPayload, FailPayload  # FailPayload можно оставить даже если ручки /fail нет
 
 app = FastAPI(title="Provider Tasking", version="0.1.0")
+
+origins = [
+    "http://localhost:5173",  # Vite dev server
+
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,              # Разрешённые источники
+    allow_credentials=True,             # Разрешить куки / авторизацию
+    allow_methods=["*"],                # Разрешённые методы (GET, POST, и т.д.)
+    allow_headers=["*"],                # Разрешённые заголовки
+)
+
 
 
 async def get_db():
