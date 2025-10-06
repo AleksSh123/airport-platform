@@ -3,11 +3,33 @@
   const PORT = Number(import.meta.env.VITE_TASK_PORT);
   const TASK_URL = `http://${HOST}:${PORT}/tasks`;
   const MODE = import.meta.env.MODE;
-  function getTasks() {
+  import TasksHeader from './components/TasksHeader.vue'
+  const task1 = {
+    order_item_id: "222",
+    service_type: "service1",
+    status: "new",
+  }
+  const columns = [
+        "id", "order_item_id", "service_type" ,"provider_id", "location", "flight",
+        "customer_hint", "status", "checklist", "sla_due_at", "created_at", "updated_at"
+            ]
+
+  async function getTasks() {
     fetch(TASK_URL)
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(error => console.error('Error:', error));
+  }
+  async function sendTask(task){
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(task1)
+    }
+     let response = await fetch(TASK_URL, options);
+     console.log(JSON.stringify(response));
   }
 
 </script>
@@ -15,21 +37,21 @@
 <template>
   <div>  
     <header>
-      Заголовок
+      Заголовок2
     </header>
   </div>
 
 <div class="main_area">
   <div class="button_area">
     <button @click="getTasks"> Отобразить задачи</button>
-    <button> Записать задачи </button>
+    <button @click="sendTask(task1)"> Записать задачи </button>
   </div>
   <div class="task_area">
-    ffgnngn
-    {{ TASK_URL }}
     <div>
-      curent mode is:  {{ MODE }}
+      current backed url - {{ TASK_URL }}
     </div>
+
+    <TasksHeader :columns="columns"/>
   </div>
 
 </div>
