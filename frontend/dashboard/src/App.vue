@@ -10,6 +10,20 @@
     service_type: "service1",
     status: "new",
   }
+  const newTask = {
+    id: "",
+    order_item_id: "",
+    service_type: "",
+    provider_id: "",
+    location: "",
+    flight: "",
+    customer_hint: "",
+    status: "",
+    checklist: "",
+    sla_due_at: "",
+    created_at: "",
+    updated_at: "",
+  }
   const columns = [
         "id", "order_item_id", "service_type" ,"provider_id", "location", "flight",
         "customer_hint", "status", "checklist", "sla_due_at", "created_at", "updated_at"
@@ -45,7 +59,7 @@
 <div class="main_area">
   <div class="button_area">
     <button @click="getTasks"> Отобразить задачи</button>
-    <button @click="sendTask(task1)"> Записать задачи </button>
+    <button @click="sendTask(newTask)"> Записать задачи </button>
   </div>
   <div class="task_area">
     <div>
@@ -53,7 +67,7 @@
     </div>
 
     <TasksHeader :columns="columns"/>
-    <InputRow />
+    <InputRow v-model="newTask"/>
 
   </div>
 

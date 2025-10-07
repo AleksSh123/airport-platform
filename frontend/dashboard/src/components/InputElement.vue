@@ -4,4 +4,10 @@
         <input type="text">
     </div>
 </template>
-<style scoped></style>
+<style scoped>
+    input {
+        width: 100%;
+        height: 100%;
+
+    }
+</style>
