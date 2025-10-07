@@ -4,6 +4,7 @@
   const TASK_URL = `http://${HOST}:${PORT}/tasks`;
   const MODE = import.meta.env.MODE;
   import TasksHeader from './components/TasksHeader.vue'
+  import InputRow from './components/InputRow.vue';
   const task1 = {
     order_item_id: "222",
     service_type: "service1",
@@ -52,6 +53,8 @@
     </div>
 
     <TasksHeader :columns="columns"/>
+    <InputRow />
+
   </div>
 
 </div>
