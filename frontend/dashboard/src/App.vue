@@ -3,14 +3,17 @@
   const PORT = Number(import.meta.env.VITE_TASK_PORT);
   const TASK_URL = `http://${HOST}:${PORT}/tasks`;
   const MODE = import.meta.env.MODE;
+  import { reactive } from 'vue';
   import TasksHeader from './components/TasksHeader.vue'
   import InputRow from './components/InputRow.vue';
+  import OutputRow from './components/OutputRow.vue';
   const task1 = {
     order_item_id: "222",
     service_type: "service1",
     status: "new",
   }
-  const newTask = {
+  let tasks = reactive([]);
+  const newTask = reactive({
     id: "",
     order_item_id: "",
     service_type: "",
@@ -23,28 +26,60 @@
     sla_due_at: "",
     created_at: "",
     updated_at: "",
-  }
+    isValid: function(){
+      return ((this.order_item_id.length) > 0 &&
+       (this.service_type.length > 0))
+    },
+    clear: function(){
+      Object.keys(this).forEach(k => {
+        if (typeof this[k] === "string") this[k] = "";
+      })
+    }
+  });
+  console.log(Object.keys(newTask));
   const columns = [
         "id", "order_item_id", "service_type" ,"provider_id", "location", "flight",
         "customer_hint", "status", "checklist", "sla_due_at", "created_at", "updated_at"
             ]
-
-  async function getTasks() {
-    fetch(TASK_URL)
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+  function refineObj(obj){
+    const result = {};
+    Object.keys(obj).forEach(k => {
+      console.debug(`key: ${k}, typeof key: ${typeof obj[k]}, value: ${obj[k]}`)
+      if ((typeof obj[k] === "string") && (obj[k].length > 0)){
+        
+        result[k] = obj[k]
+      }
+    })
+    return result;
   }
-  async function sendTask(task){
+  async function getTasks() {
+    const response = await fetch(TASK_URL);
+      const responseJson = await response.json();
+      return responseJson;
+  }
+  async function sendTask(){
+    console.debug("start sendTask!");
+    console.debug(`newTask.isValid: ${newTask.isValid()}`)
+    const objectToSend = refineObj(newTask);
+    //debugger;
+    if (!newTask.isValid()) return;
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify(task1)
+      body: JSON.stringify(refineObj(newTask))
     }
      let response = await fetch(TASK_URL, options);
-     console.log(JSON.stringify(response));
+     console.log(JSON.stringify(objectToSend));
+     if (response.ok){
+      newTask.clear();
+     }
+     await updateView();
+  }
+  async function updateView(){
+    tasks = await getTasks();
+    console.debug(`tasks is: ${JSON.stringify(tasks, null, 2)}`);
   }
 
 </script>
@@ -52,13 +87,13 @@
 <template>
   <div>  
     <header>
-      Заголовок2
+      Airservices dashboard
     </header>
   </div>
 
 <div class="main_area">
   <div class="button_area">
-    <button @click="getTasks"> Отобразить задачи</button>
+    <button @click="updateView"> Отобразить задачи</button>
     <button @click="sendTask(newTask)"> Записать задачи </button>
   </div>
   <div class="task_area">
@@ -66,8 +101,9 @@
       current backed url - {{ TASK_URL }}
     </div>
 
-    <TasksHeader :columns="columns"/>
-    <InputRow v-model="newTask"/>
+    <TasksHeader :columns="columns" />
+    <InputRow v-model="newTask" />
+    <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" />
 
   </div>
 

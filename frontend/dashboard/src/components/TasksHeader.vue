@@ -8,8 +8,8 @@
             {{ column }}
         </div> -->
         <ColumnHeader :caption="'id'" />
-        <ColumnHeader :caption="'order_item_id'" />
-        <ColumnHeader :caption="'service_type'" />
+        <ColumnHeader :caption="'order_item_id*'" />
+        <ColumnHeader :caption="'service_type*'" />
         <ColumnHeader :caption="'provider_id'" />
         <ColumnHeader :caption="'location'" />
         <ColumnHeader :caption="'flight'" />

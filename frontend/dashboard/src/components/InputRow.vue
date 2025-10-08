@@ -1,21 +1,24 @@
 <script setup>
     import InputElement from './InputElement.vue';
+    import { toRef } from 'vue';
     const model = defineModel();
+    const fields = toRef(model.value)
+    //console.log(model);
 </script>
 <template>
     <div class="row">
-        <InputElement v-model="model.id"/>
-        <InputElement v-model="model.order_item_id"/>
-        <InputElement v-model="model.service_type"/>
-        <InputElement v-model="model.provider_id"/>
-        <InputElement v-model="model.location"/>
-        <InputElement v-model="model.flight"/>
-        <InputElement v-model="model.customer_hint"/>
-        <InputElement v-model="model.status"/>
-        <InputElement v-model="model.checklist"/>
-        <InputElement v-model="model.sla_due_at"/>
-        <InputElement v-model="model.created_at"/>
-        <InputElement v-model="model.updated_at"/>
+        <InputElement v-model="fields.id"/>
+        <InputElement v-model="fields.order_item_id"/>
+        <InputElement v-model="fields.service_type"/>
+        <InputElement v-model="fields.provider_id"/>
+        <InputElement v-model="fields.location"/>
+        <InputElement v-model="fields.flight"/>
+        <InputElement v-model="fields.customer_hint"/>
+        <InputElement v-model="fields.status"/>
+        <InputElement v-model="fields.checklist"/>
+        <InputElement v-model="fields.sla_due_at"/>
+        <InputElement v-model="fields.created_at"/>
+        <InputElement v-model="fields.updated_at"/>
     </div>
 </template>
 <style scoped>
