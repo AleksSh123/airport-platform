@@ -3,7 +3,7 @@
   const PORT = Number(import.meta.env.VITE_TASK_PORT);
   const TASK_URL = `http://${HOST}:${PORT}/tasks`;
   const MODE = import.meta.env.MODE;
-  import { reactive } from 'vue';
+  import { reactive, ref } from 'vue';
   import TasksHeader from './components/TasksHeader.vue'
   import InputRow from './components/InputRow.vue';
   import OutputRow from './components/OutputRow.vue';
@@ -12,7 +12,7 @@
     service_type: "service1",
     status: "new",
   }
-  let tasks = reactive([]);
+  let tasks = ref([]);
   const newTask = reactive({
     id: "",
     order_item_id: "",
@@ -78,8 +78,8 @@
      await updateView();
   }
   async function updateView(){
-    tasks = await getTasks();
-    console.debug(`tasks is: ${JSON.stringify(tasks, null, 2)}`);
+    tasks.value = await getTasks();
+    console.debug(`tasks is: ${JSON.stringify(tasks.value, null, 2)}`);
   }
 
 </script>
@@ -103,7 +103,7 @@
 
     <TasksHeader :columns="columns" />
     <InputRow v-model="newTask" />
-    <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" />
+    <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/>
 
   </div>
 
@@ -128,5 +128,11 @@ header {
 .task_area {
   border: 1px solid black;
   width: 100%;
+}
+.output-row {
+  border-bottom: 1px solid black;
+}
+.output-row:last-of-type {
+  border-bottom: none;
 }
 </style>
