@@ -103,7 +103,7 @@
 
     <TasksHeader :columns="columns" />
     <InputRow v-model="newTask" />
-    <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" />
+    <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/>
 
   </div>
 
@@ -128,5 +128,11 @@ header {
 .task_area {
   border: 1px solid black;
   width: 100%;
+}
+.output-row {
+  border-bottom: 1px solid black;
+}
+.output-row:last-of-type {
+  border-bottom: none;
 }
 </style>
