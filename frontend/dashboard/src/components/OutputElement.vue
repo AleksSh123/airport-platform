@@ -7,4 +7,7 @@
     </div>
 </template>
 <style scoped>
+    div {
+        overflow: hidden;
+    }
 </style>

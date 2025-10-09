@@ -18,7 +18,11 @@
     order_item_id: "",
     service_type: "",
     provider_id: "",
-    location: "",
+    location: {
+      terminal: "",
+      zone: "",
+      gate: "",
+    },
     flight: "",
     customer_hint: "",
     status: "",
@@ -45,9 +49,10 @@
     const result = {};
     Object.keys(obj).forEach(k => {
       console.debug(`key: ${k}, typeof key: ${typeof obj[k]}, value: ${obj[k]}`)
-      if ((typeof obj[k] === "string") && (obj[k].length > 0)){
-        
+      if ((typeof obj[k] === "string") && (obj[k].length > 0)){        
         result[k] = obj[k]
+      } else if (typeof obj[k] === "object"){
+        result[k] = refineObj(obj[k])
       }
     })
     return result;
