@@ -23,8 +23,14 @@
       zone: "",
       gate: "",
     },
-    flight: "",
-    customer_hint: "",
+    flight: {
+      iata: "",
+      std: ""
+    },
+    customer_hint: {
+      name: "",
+      second: ""
+    },
     status: "",
     checklist: "",
     sla_due_at: "",
@@ -35,9 +41,17 @@
        (this.service_type.length > 0))
     },
     clear: function(){
-      Object.keys(this).forEach(k => {
-        if (typeof this[k] === "string") this[k] = "";
-      })
+      function clearProperty(obj){
+        Object.keys(obj).forEach(k => {
+          if (typeof obj[k] === "string") {
+            obj[k] = "";
+          } else if (typeof obj[k] === "object"){
+            clearProperty(obj[k]);
+          }
+        })
+      }
+      clearProperty(this);
+
     }
   });
   console.log(Object.keys(newTask));
