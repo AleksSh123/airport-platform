@@ -3,6 +3,7 @@
     import InputLocationElement from './InputLocationElement.vue';
     import InputFlightElement from './InputFlightElement.vue';
     import InputCustomerHintElement from './InputCustomerHintElement.vue';
+    import DumbElement from './DumbElement.vue';
     import { toRef } from 'vue';
     const model = defineModel();
     const fields = toRef(model.value)
@@ -20,8 +21,8 @@
         <InputElement v-model="fields.status"/>
         <InputElement v-model="fields.checklist"/>
         <InputElement v-model="fields.sla_due_at"/>
-        <InputElement v-model="fields.created_at"/>
-        <InputElement v-model="fields.updated_at"/>
+        <DumbElement />
+        <DumbElement />
     </div>
 </template>
 <style scoped>
