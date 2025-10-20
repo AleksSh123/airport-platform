@@ -104,29 +104,29 @@
 </script>
 
 <template>
-  <div>  
-    <header>
-      Airservices dashboard
-    </header>
-  </div>
+  <Uapp>
+    <div class="max-w-8xl">  
+      <header>
+        Airservices dashboard
+      </header>
+      <div class="main_area">
+        <div class="w-fit p-1">
+          <button @click="updateView"> Отобразить задачи</button>
+          <button @click="sendTask(newTask)"> Записать задачи </button>
+        </div>
+        <div class="task_area">
+          <div>
+            current backed url - {{ TASK_URL }}
+          </div>
 
-<div class="main_area">
-  <div class="button_area">
-    <button @click="updateView"> Отобразить задачи</button>
-    <button @click="sendTask(newTask)"> Записать задачи </button>
-  </div>
-  <div class="task_area">
-    <div>
-      current backed url - {{ TASK_URL }}
+          <TasksHeader :columns="columns" />
+          <InputRow v-model="newTask" />
+          <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/>
+
+        </div>
+      </div>
     </div>
-
-    <TasksHeader :columns="columns" />
-    <InputRow v-model="newTask" />
-    <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/>
-
-  </div>
-
-</div>
+  </Uapp>
 </template>
 
 <style scoped>
