@@ -7,6 +7,7 @@
   import TasksHeader from './components/TasksHeader.vue'
   import InputRow from './components/InputRow.vue';
   import OutputRow from './components/OutputRow.vue';
+
   const task1 = {
     order_item_id: "222",
     service_type: "service1",
@@ -54,7 +55,6 @@
 
     }
   });
-  console.log(Object.keys(newTask));
   const columns = [
         "id", "order_item_id", "service_type" ,"provider_id", "location", "flight",
         "customer_hint", "status", "checklist", "sla_due_at", "created_at", "updated_at"
@@ -99,34 +99,63 @@
   async function updateView(){
     tasks.value = await getTasks();
     console.debug(`tasks is: ${JSON.stringify(tasks.value, null, 2)}`);
+
   }
 
 </script>
 
 <template>
-  <Uapp>
-    <div class="max-w-8xl">  
-      <header>
-        Airservices dashboard
-      </header>
-      <div class="main_area">
-        <div class="w-fit p-1">
-          <button @click="updateView"> Отобразить задачи</button>
-          <button @click="sendTask(newTask)"> Записать задачи </button>
-        </div>
-        <div class="task_area">
-          <div>
-            current backed url - {{ TASK_URL }}
+  <UApp>
+    <UHeader title="Airservices dashboard">
+      <template #right>
+        current backed url - {{ TASK_URL }}
+      </template>
+    </UHeader>
+    <UMain>
+      <div class="max-w-8xl">  
+        <div class="main_area">
+          <div class="w-fit p-1">
+            <UButton @click="updateView" class="m-1"
+            color="neutral" variant="outline">
+              Отобразить задачи
+            </UButton>
+            <UButton @click="sendTask(newTask)" class="m-1"
+            color="neutral" variant="outline">
+              Записать задачи
+            </UButton>
           </div>
+          <div class="task_area">
+            <TasksHeader :columns="columns" />
+            <InputRow v-model="newTask" />
+<!--             <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/> -->
+            <UTable :data="tasks">
+              <template #location-cell="{ raw }">
+                    <div>
+                      <div>
+                          <span>Terminal:</span>
+                          <span> {{ raw }} </span>
+                      </div>
+                      <div>
+                          <span>Zone:</span>
+                          <span> {{  }}</span>
+                      </div>
+                      <div>
+                          <span>Gate:</span>
+                          <span> {{  }}</span>
+                      </div>
+                  </div>
+              </template>
+            </UTable>
 
-          <TasksHeader :columns="columns" />
-          <InputRow v-model="newTask" />
-          <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/>
-
+          </div>
         </div>
       </div>
-    </div>
-  </Uapp>
+    </UMain>
+
+    <UFooter>
+
+    </UFooter>
+  </UApp>
 </template>
 
 <style scoped>
@@ -145,7 +174,7 @@ header {
 
 }
 .task_area {
-  border: 1px solid black;
+
   width: 100%;
 }
 .output-row {

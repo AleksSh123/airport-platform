@@ -6,7 +6,7 @@
 </template>
 <style scoped>
     div {
-        border-right: solid black 1px;
+
         overflow: hidden;
     }
 </style>

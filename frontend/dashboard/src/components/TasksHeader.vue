@@ -4,9 +4,6 @@
 </script>
 <template>
     <div class="row">
-<!--         <div v-for="column in columns">
-            {{ column }}
-        </div> -->
         <ColumnHeader :caption="'id'" />
         <ColumnHeader :caption="'order_item_id*'" />
         <ColumnHeader :caption="'service_type*'" />
