@@ -7,6 +7,8 @@
   import TasksHeader from './components/TasksHeader.vue'
   import InputRow from './components/InputRow.vue';
   import OutputRow from './components/OutputRow.vue';
+  import FlightCell from './components/FlightCell.vue';
+  import CustomerHintCell from './components/CustomerHintCell.vue';
 
   const task1 = {
     order_item_id: "222",
@@ -129,21 +131,27 @@
             <InputRow v-model="newTask" />
 <!--             <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/> -->
             <UTable :data="tasks">
-              <template #location-cell="{ raw }">
+              <template #location-cell="{ row }">
                     <div>
                       <div>
                           <span>Terminal:</span>
-                          <span> {{ raw }} </span>
+                          <span> {{ row.original.location?.terminal }} </span>
                       </div>
                       <div>
                           <span>Zone:</span>
-                          <span> {{  }}</span>
+                          <span> {{ row.original.location?.zone }}</span>
                       </div>
                       <div>
                           <span>Gate:</span>
-                          <span> {{  }}</span>
+                          <span> {{ row.original.location?.gate }}</span>
                       </div>
                   </div>
+              </template>
+              <template #flight-cell=" { row } ">
+                <FlightCell :flight="row.original.flight" />
+              </template>
+              <template #customer_hint-cell=" { row } ">
+                <CustomerHintCell :customer_hint="row.original.customer_hint" />
               </template>
             </UTable>
 
