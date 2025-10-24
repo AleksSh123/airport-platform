@@ -39,6 +39,7 @@
     sla_due_at: "",
     created_at: "",
     updated_at: "",
+
     isValid: function(){
       return ((this.order_item_id.length) > 0 &&
        (this.service_type.length > 0))
@@ -57,7 +58,62 @@
 
     }
   });
+
   const columns = [
+    {
+      accessorKey: 'id',
+      header: 'Id',
+    },
+    {
+      accessorKey: 'order_item_id',
+      header: 'order_item_id',
+    },
+    {
+      accessorKey: 'service_type',
+      header: 'service_type',
+      meta: { class: { td: 'max-w-3xs overflow-hidden text-ellipsis whitespace-normal'} },
+      attrs: (row) => ({
+        title: row.getValue?.() ?? '' // <-- покажет полный текст
+      })
+    },
+    {
+      accessorKey: 'provider_id',
+      header: 'provider_id',
+    },
+    {
+      accessorKey: 'location',
+      header: 'location',
+    },
+    {
+      accessorKey: 'flight',
+      header: 'flight',
+    },
+    {
+      accessorKey: 'customer_hint',
+      header: 'customer_hint',
+    },
+    {
+      accessorKey: 'status',
+      header: 'status',
+    },
+    {
+      accessorKey: 'checklist',
+      header: 'checklist',
+    },
+    {
+      accessorKey: 'sla_due_at',
+      header: 'sla_due_at',
+    },
+    {
+      accessorKey: 'created_at',
+      header: 'created_at',
+    },
+    {
+      accessorKey: 'updated_at',
+      header: 'updated_at',
+    }
+  ]
+  const column_names = [
         "id", "order_item_id", "service_type" ,"provider_id", "location", "flight",
         "customer_hint", "status", "checklist", "sla_due_at", "created_at", "updated_at"
             ]
@@ -130,7 +186,7 @@
             <TasksHeader :columns="columns" />
             <InputRow v-model="newTask" />
 <!--             <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/> -->
-            <UTable :data="tasks">
+            <UTable :data="tasks" :columns="columns" class="max-w-7xl">
               <template #location-cell="{ row }">
                     <div>
                       <div>
