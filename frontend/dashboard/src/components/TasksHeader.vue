@@ -4,7 +4,6 @@
 </script>
 <template>
     <div class="row">
-        <ColumnHeader :caption="'id'" />
         <ColumnHeader :caption="'order_item_id*'" />
         <ColumnHeader :caption="'service_type*'" />
         <ColumnHeader :caption="'provider_id'" />
@@ -14,15 +13,13 @@
         <ColumnHeader :caption="'status'" />
         <ColumnHeader :caption="'checklist'" />
         <ColumnHeader :caption="'sla_due_at'" />
-        <ColumnHeader :caption="'created_at'" />
-        <ColumnHeader :caption="'updated_at'" />
     </div>
 
 </template>
 <style scoped>
     .row{
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 
 </style>

@@ -70,11 +70,11 @@
     },
     {
       accessorKey: 'service_type',
-      header: 'service_type',
-      meta: { class: { td: 'max-w-3xs overflow-hidden text-ellipsis whitespace-normal'} },
-      attrs: (row) => ({
-        title: row.getValue?.() ?? '' // <-- покажет полный текст
-      })
+      header: 'sservice_type',
+      //meta: { class: { td: 'max-w-3xs overflow-hidden text-ellipsis whitespace-normal'} },
+      //size: 30,
+      maxSize: 30,
+      //enableResizing: true
     },
     {
       accessorKey: 'provider_id',
@@ -87,6 +87,7 @@
     {
       accessorKey: 'flight',
       header: 'flight',
+      size: 30
     },
     {
       accessorKey: 'customer_hint',
@@ -159,6 +160,12 @@
     console.debug(`tasks is: ${JSON.stringify(tasks.value, null, 2)}`);
 
   }
+  function onHover(e, row, column, cell){
+    console.debug(`e is: ${JSON.stringify(e, null, 2)}`);
+    console.debug(`row is: ${JSON.stringify(row, null, 2)}`);
+    console.debug(`column is: ${JSON.stringify(column, null, 2)}`);
+    console.debug(`cell is: ${JSON.stringify(cell, null, 2)}`);
+  };
 
 </script>
 
@@ -183,11 +190,11 @@
             </UButton>
           </div>
           <div class="task_area">
-            <TasksHeader :columns="columns" />
-            <InputRow v-model="newTask" />
+            <TasksHeader :columns="columns" class="max-w-7xl"/>
+            <InputRow v-model="newTask" class="max-w-7xl"/>
 <!--             <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/> -->
             <UTable :data="tasks" :columns="columns" class="max-w-7xl">
-              <template #location-cell="{ row }">
+              <template #location-cell="{ row }"">
                     <div>
                       <div>
                           <span>Terminal:</span>

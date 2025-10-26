@@ -5,15 +5,11 @@
     <div>
         <div class="row">
             <span>Terminal:</span>
-            <input v-model="model.terminal" type="text" size="3">
-        </div>
-        <div class="row">
-            <span>Zone:</span>
-            <input v-model="model.zone" type="text" size="3">
+            <UInput color="neutral" v-model="model.terminal" size="3" />
         </div>
         <div class="row">
             <span>Gate:</span>
-            <input v-model="model.gate" type="text" size="3">
+            <UInput color="neutral" v-model="model.gate" size="3" />
         </div>
     </div>
 </template>

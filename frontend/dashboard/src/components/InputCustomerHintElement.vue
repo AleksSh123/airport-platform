@@ -10,15 +10,15 @@
     <div>
         <div class="row">
             <span>Name:</span>
-            <input type="text" name="name" id="customer_hint_name" size="5"
+            <UInput color="neutral"  name="name" id="customer_hint_name" size="5"
             :value="model.name"
-            @input="updateModel">
+            @input="updateModel"/>
         </div>
         <div class="row">
             <span>Second:</span>
-            <input type="text" name="second" id="customer_hint_second" size="5"
+            <UInput color="neutral" name="second" id="customer_hint_second" size="5"
             :value="model.second"
-            @input="updateModel">
+            @input="updateModel"/>
         </div>
     </div>
 </template>

@@ -5,11 +5,11 @@
     <div>
         <div class="row">
             <span>Iata:</span>
-            <input v-model="model.iata" type="text" size="3">
+            <UInput color="neutral" v-model="model.iata" type="text" size="3" />
         </div>
         <div class="row">
             <span>Std:</span>
-            <input v-model="model.std" type="date" placeholder="date">
+            <UInput color="neutral"  v-model="model.std" type="date"/>
         </div>
     </div>
 </template>

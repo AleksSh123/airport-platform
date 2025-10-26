@@ -11,23 +11,20 @@
 </script>
 <template>
     <div class="row">
-        <InputElement v-model="fields.id"/>
-        <InputElement v-model="fields.order_item_id"/>
-        <InputElement v-model="fields.service_type"/>
-        <InputElement v-model="fields.provider_id"/>
+        <UInput placeholder="Input order item type" color="neutralsssss" v-model="fields.order_item_id"/>
+        <UInput placeholder="Input service type"  color="neutral" v-model="fields.service_type"/>
+        <UInput placeholder="Provider ID"  color="neutral"  v-model="fields.provider_id"/>
         <InputLocationElement v-model="fields.location"/>
         <InputFlightElement v-model="fields.flight"/>
         <InputCustomerHintElement v-model="fields.customer_hint"/>
-        <InputElement v-model="fields.status"/>
-        <InputElement v-model="fields.checklist"/>
-        <InputElement v-model="fields.sla_due_at"/>
-        <DumbElement />
-        <DumbElement />
+        <UInput placeholder="Input status"  color="neutral"  v-model="fields.status"/>
+        <UInput placeholder="Input checklist"  color="neutral" t v-model="fields.checklist"/>
+        <UInput placeholder="Input SLA"  color="neutral"  v-model="fields.sla_due_at"/>
     </div>
 </template>
 <style scoped>
     .row {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 </style>
