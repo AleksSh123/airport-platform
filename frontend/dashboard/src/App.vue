@@ -177,49 +177,44 @@
       </template>
     </UHeader>
     <UMain>
-      <div class="max-w-8xl">  
-        <div class="main_area">
-          <div class="w-fit p-1">
-            <UButton @click="updateView" class="m-1"
-            color="neutral" variant="outline">
-              Отобразить задачи
-            </UButton>
-            <UButton @click="sendTask(newTask)" class="m-1"
-            color="neutral" variant="outline">
-              Записать задачи
-            </UButton>
-          </div>
-          <div class="task_area">
-            <TasksHeader :columns="columns" class="max-w-7xl"/>
-            <InputRow v-model="newTask" class="max-w-7xl"/>
-<!--             <OutputRow v-for="(task, index) in tasks" :task="tasks[index]" class="output-row"/> -->
-            <UTable :data="tasks" :columns="columns" class="max-w-7xl">
-              <template #location-cell="{ row }"">
-                    <div>
-                      <div>
-                          <span>Terminal:</span>
-                          <span> {{ row.original.location?.terminal }} </span>
-                      </div>
-                      <div>
-                          <span>Zone:</span>
-                          <span> {{ row.original.location?.zone }}</span>
-                      </div>
-                      <div>
-                          <span>Gate:</span>
-                          <span> {{ row.original.location?.gate }}</span>
-                      </div>
-                  </div>
-              </template>
-              <template #flight-cell=" { row } ">
-                <FlightCell :flight="row.original.flight" />
-              </template>
-              <template #customer_hint-cell=" { row } ">
-                <CustomerHintCell :customer_hint="row.original.customer_hint" />
-              </template>
-            </UTable>
-
-          </div>
+      <div class="flex">
+        <div class="flex flex-col p-1">
+          <UButton @click="updateView" class="m-1"
+          color="neutral" variant="outline">
+            Отобразить задачи
+          </UButton>
+          <UButton @click="sendTask(newTask)" class="m-1"
+          color="neutral" variant="outline">
+            Записать задачи
+          </UButton>
         </div>
+        <UContainer fluid>
+          <InputRow v-model="newTask"/>
+          <UTable :data="tasks" :columns="columns">
+            <template #location-cell="{ row }">
+                  <div>
+                    <div>
+                        <span>Terminal:</span>
+                        <span> {{ row.original.location?.terminal }} </span>
+                    </div>
+                    <div>
+                        <span>Zone:</span>
+                        <span> {{ row.original.location?.zone }}</span>
+                    </div>
+                    <div>
+                        <span>Gate:</span>
+                        <span> {{ row.original.location?.gate }}</span>
+                    </div>
+                </div>
+            </template>
+            <template #flight-cell=" { row } ">
+              <FlightCell :flight="row.original.flight" />
+            </template>
+            <template #customer_hint-cell=" { row } ">
+              <CustomerHintCell :customer_hint="row.original.customer_hint" />
+            </template>
+          </UTable>
+        </UContainer>
       </div>
     </UMain>
 

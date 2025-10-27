@@ -5,22 +5,17 @@
     import InputCustomerHintElement from './InputCustomerHintElement.vue';
     import DumbElement from './DumbElement.vue';
     import { toRef } from 'vue';
+    import * as z from 'zod';
     const model = defineModel();
     const fields = toRef(model.value)
     //console.log(model);
+    const schema = z.object({
+        order_item_id: z.string('order item id required').min(4,'minimum 4 symbols required')
+    })
 </script>
 <template>
-    <div class="row">
-        <UInput placeholder="Input order item type" color="neutralsssss" v-model="fields.order_item_id"/>
-        <UInput placeholder="Input service type"  color="neutral" v-model="fields.service_type"/>
-        <UInput placeholder="Provider ID"  color="neutral"  v-model="fields.provider_id"/>
-        <InputLocationElement v-model="fields.location"/>
-        <InputFlightElement v-model="fields.flight"/>
-        <InputCustomerHintElement v-model="fields.customer_hint"/>
-        <UInput placeholder="Input status"  color="neutral"  v-model="fields.status"/>
-        <UInput placeholder="Input checklist"  color="neutral" t v-model="fields.checklist"/>
-        <UInput placeholder="Input SLA"  color="neutral"  v-model="fields.sla_due_at"/>
-        <UForm class="flex">
+    <div >
+        <UForm class="flex row gap-1" :schema="schema">
             <UFormField label="Order item id*" name="order_item_id">
                 <UInput v-model="fields.order_item_id" placeholder="Input order item type" title="Input order item type"/>
             </UFormField>
@@ -67,6 +62,7 @@
                 <UInput type="date" v-model="fields.sla_due_at"/>
             </UFormField> 
         </UForm>
+
     </div>
 </template>
 <style scoped>
