@@ -70,7 +70,7 @@
     },
     {
       accessorKey: 'service_type',
-      header: 'sservice_type',
+      header: 'service_type',
       //meta: { class: { td: 'max-w-3xs overflow-hidden text-ellipsis whitespace-normal'} },
       //size: 30,
       maxSize: 30,
