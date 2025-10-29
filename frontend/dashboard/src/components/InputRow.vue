@@ -10,12 +10,19 @@
     const fields = toRef(model.value)
     //console.log(model);
     const schema = z.object({
-        order_item_id: z.string('order item id required').min(4,'minimum 4 symbols required')
+        order_item_id: z.string('Order item id must be a string'),
+        service_type: z.string('Service type must be a string'),
+        provider_id: z.string().min(5, 'Must be 5 letters min'),
+        location: z.object({
+            terminal: z.string().optional(),
+            gate: z.number('gate must be a number').optional(),
+            zone: z.string().optional()
+        })
     })
 </script>
 <template>
     <div >
-        <UForm class="flex row gap-1" :schema="schema">
+        <UForm class="flex row gap-1" :schema="schema" :state="fields">
             <UFormField label="Order item id*" name="order_item_id">
                 <UInput v-model="fields.order_item_id" placeholder="Input order item type" title="Input order item type"/>
             </UFormField>
@@ -26,13 +33,13 @@
                 <UInput v-model="fields.provider_id" placeholder="Input provider id" title="Input provider id"/>
             </UFormField>
             <UFormField label="location">
-                <UFormField label="Terminal">
+                <UFormField label="Terminal" name="location.terminal">
                     <UInput v-model="fields.location.terminal"/>
                 </UFormField>
-                <UFormField label="Gate">
-                    <UInput v-model="fields.location.gate" />
+                <UFormField label="Gate" name="location.gate">
+                    <UInput v-model.number="fields.location.gate" />
                 </UFormField>
-                <UFormField label="Zone">
+                <UFormField label="Zone" name="location.zone">
                     <UInput v-model="fields.location.zone" />
                 </UFormField>
             </UFormField>
@@ -61,8 +68,8 @@
             <UFormField label="SLA">
                 <UInput type="date" v-model="fields.sla_due_at"/>
             </UFormField> 
-        </UForm>
 
+        </UForm>
     </div>
 </template>
 <style scoped>

@@ -121,7 +121,7 @@
   function refineObj(obj){
     const result = {};
     Object.keys(obj).forEach(k => {
-      console.debug(`key: ${k}, typeof key: ${typeof obj[k]}, value: ${obj[k]}`)
+      //console.debug(`key: ${k}, typeof key: ${typeof obj[k]}, value: ${obj[k]}`)
       if ((typeof obj[k] === "string") && (obj[k].length > 0)){        
         result[k] = obj[k]
       } else if (typeof obj[k] === "object"){
@@ -157,7 +157,7 @@
   }
   async function updateView(){
     tasks.value = await getTasks();
-    console.debug(`tasks is: ${JSON.stringify(tasks.value, null, 2)}`);
+    //console.debug(`tasks is: ${JSON.stringify(tasks.value, null, 2)}`);
 
   }
   function onHover(e, row, column, cell){
@@ -166,6 +166,10 @@
     console.debug(`column is: ${JSON.stringify(column, null, 2)}`);
     console.debug(`cell is: ${JSON.stringify(cell, null, 2)}`);
   };
+  
+  function onSubmit(e){
+    console.log(e)
+  }
 
 </script>
 
@@ -184,12 +188,12 @@
             Отобразить задачи
           </UButton>
           <UButton @click="sendTask(newTask)" class="m-1"
-          color="neutral" variant="outline">
-            Записать задачи
+          color="neutral" variant="outline" type="submith">
+            Записать задачу
           </UButton>
         </div>
         <UContainer fluid>
-          <InputRow v-model="newTask"/>
+          <InputRow v-model="newTask" @submit="onSubmit"/>
           <UTable :data="tasks" :columns="columns">
             <template #location-cell="{ row }">
                   <div>
