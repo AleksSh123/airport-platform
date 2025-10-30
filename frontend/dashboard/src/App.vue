@@ -73,6 +73,11 @@
     {
       accessorKey: 'order_item_id',
       header: 'order_item_id',
+      meta: {
+        class: {
+          td: 'border-l-indigo-500'
+        }
+      }
     },
     {
       accessorKey: 'service_type',
@@ -224,30 +229,33 @@
         </div>
         <UContainer>
           <InputRow v-model="newTask" @submit="onSubmit"/>
-          <UTable sticky :data="tasks" :columns="columns" >
-            <template #location-cell="{ row }">
-                  <div>
+
+            <UTable sticky :data="tasks" :columns="columns" >
+              <template #location-cell="{ row }">
                     <div>
-                        <span>Terminal:</span>
-                        <span> {{ row.original.location?.terminal }} </span>
-                    </div>
-                    <div>
-                        <span>Zone:</span>
-                        <span> {{ row.original.location?.zone }}</span>
-                    </div>
-                    <div>
-                        <span>Gate:</span>
-                        <span> {{ row.original.location?.gate }}</span>
-                    </div>
-                </div>
-            </template>
-            <template #flight-cell=" { row } ">
-              <FlightCell :flight="row.original.flight" />
-            </template>
-            <template #customer_hint-cell=" { row } ">
-              <CustomerHintCell :customer_hint="row.original.customer_hint" />
-            </template>
-          </UTable>
+                      <div>
+                          <span>Terminal:</span>
+                          <span> {{ row.original.location?.terminal }} </span>
+                      </div>
+                      <div>
+                          <span>Zone:</span>
+                          <span> {{ row.original.location?.zone }}</span>
+                      </div>
+                      <div>
+                          <span>Gate:</span>
+                          <span> {{ row.original.location?.gate }}</span>
+                      </div>
+                  </div>
+              </template>
+              <template #flight-cell=" { row } ">
+                <FlightCell :flight="row.original.flight" />
+              </template>
+              <template #customer_hint-cell=" { row } ">
+                <CustomerHintCell :customer_hint="row.original.customer_hint" />
+              </template>
+            </UTable>
+
+
         </UContainer>
       </div>
     </UMain>
