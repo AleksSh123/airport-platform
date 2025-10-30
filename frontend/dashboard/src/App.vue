@@ -9,6 +9,7 @@
   import OutputRow from './components/OutputRow.vue';
   import FlightCell from './components/FlightCell.vue';
   import CustomerHintCell from './components/CustomerHintCell.vue';
+  const items = ['new', 'assigned']
 
   const task1 = {
     order_item_id: "222",
@@ -63,6 +64,11 @@
     {
       accessorKey: 'id',
       header: 'Id',
+      meta: {
+        class: {
+          td: 'max-w-32 truncate'
+        }
+      }
     },
     {
       accessorKey: 'order_item_id',
@@ -71,10 +77,12 @@
     {
       accessorKey: 'service_type',
       header: 'service_type',
-      //meta: { class: { td: 'max-w-3xs overflow-hidden text-ellipsis whitespace-normal'} },
-      //size: 30,
-      maxSize: 30,
-      //enableResizing: true
+      meta: {
+        class: {
+//          td: 'max-w-3xs overflow-hidden text-ellipsis whitespace-normal'
+          td: 'max-w-3xs text-ellipsis overflow-hidden whitespace-normal'
+        }
+      },
     },
     {
       accessorKey: 'provider_id',
@@ -107,11 +115,33 @@
     },
     {
       accessorKey: 'created_at',
-      header: 'created_at',
+      header: 'Created',
+      cell: ({ row }) => {
+        return new Date(row.getValue('created_at')).toLocaleString('ru-RU', {
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          year: 'numeric',
+          timeZoneName: 'short',
+          hour12: false
+        })
+      }
     },
     {
       accessorKey: 'updated_at',
-      header: 'updated_at',
+      header: 'Updated',
+      cell: ({ row }) => {
+        return new Date(row.getValue('created_at')).toLocaleString('ru-RU', {
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          year: 'numeric',
+          timeZoneName: 'short',
+          hour12: false
+        })
+      }
     }
   ]
   const column_names = [
@@ -192,9 +222,9 @@
             Записать задачу
           </UButton>
         </div>
-        <UContainer fluid>
+        <UContainer>
           <InputRow v-model="newTask" @submit="onSubmit"/>
-          <UTable :data="tasks" :columns="columns">
+          <UTable sticky :data="tasks" :columns="columns" >
             <template #location-cell="{ row }">
                   <div>
                     <div>

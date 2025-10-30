@@ -4,7 +4,7 @@
     import InputFlightElement from './InputFlightElement.vue';
     import InputCustomerHintElement from './InputCustomerHintElement.vue';
     import DumbElement from './DumbElement.vue';
-    import { toRef } from 'vue';
+    import { ref, toRef } from 'vue';
     import * as z from 'zod';
     const model = defineModel();
     const fields = toRef(model.value)
@@ -19,6 +19,7 @@
             zone: z.string().optional()
         })
     })
+    const statusItems = ref(["new","assigned","in_progress","done","failed","cancelled"])
 </script>
 <template>
     <div >
@@ -60,7 +61,7 @@
                 </UFormField>
             </UFormField>
             <UFormField label="Status">
-                <UInput v-model="fields.status"/>
+                <USelect v-model="fields.status" :items="statusItems" class="w-full"/>
             </UFormField>
             <UFormField label="Checklist">
                 <UInput v-model="fields.checklist"/>
