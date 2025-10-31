@@ -3,12 +3,14 @@
   const PORT = Number(import.meta.env.VITE_TASK_PORT);
   const TASK_URL = `http://${HOST}:${PORT}/tasks`;
   const MODE = import.meta.env.MODE;
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, h, resolveComponent } from 'vue';
   import TasksHeader from './components/TasksHeader.vue'
   import InputRow from './components/InputRow.vue';
   import OutputRow from './components/OutputRow.vue';
   import FlightCell from './components/FlightCell.vue';
   import CustomerHintCell from './components/CustomerHintCell.vue';
+  import LocationCell from './components/LocationCell.vue';
+  const UCheckbox = resolveComponent('UCheckbox')
   const items = ['new', 'assigned']
 
   const task1 = {
@@ -62,6 +64,24 @@
 
   const columns = [
     {
+      id: 'select',
+      header: ({ table }) =>
+        h(UCheckbox, {
+          modelValue: table.getIsSomePageRowsSelected()
+            ? 'indeterminate'
+            : table.getIsAllPageRowsSelected(),
+          'onUpdate:modelValue': (value) =>
+            table.toggleAllPageRowsSelected(!!value),
+          'aria-label': 'Select all'
+        }),
+      cell: ({ row }) =>
+        h(UCheckbox, {
+          modelValue: row.getIsSelected(),
+          'onUpdate:modelValue': (value) => row.toggleSelected(!!value),
+          'aria-label': 'Select row'
+        })
+    },
+    {
       accessorKey: 'id',
       header: 'Id',
       meta: {
@@ -75,7 +95,7 @@
       header: 'order_item_id',
       meta: {
         class: {
-          td: 'border-l-indigo-500'
+          td: 'border-l border-neutral-300'
         }
       }
     },
@@ -149,10 +169,6 @@
       }
     }
   ]
-  const column_names = [
-        "id", "order_item_id", "service_type" ,"provider_id", "location", "flight",
-        "customer_hint", "status", "checklist", "sla_due_at", "created_at", "updated_at"
-            ]
   function refineObj(obj){
     const result = {};
     Object.keys(obj).forEach(k => {
@@ -193,19 +209,17 @@
   async function updateView(){
     tasks.value = await getTasks();
     //console.debug(`tasks is: ${JSON.stringify(tasks.value, null, 2)}`);
-
   }
-  function onHover(e, row, column, cell){
+  function onHover(e, row){
     console.debug(`e is: ${JSON.stringify(e, null, 2)}`);
     console.debug(`row is: ${JSON.stringify(row, null, 2)}`);
-    console.debug(`column is: ${JSON.stringify(column, null, 2)}`);
-    console.debug(`cell is: ${JSON.stringify(cell, null, 2)}`);
   };
-  
-  function onSubmit(e){
-    console.log(e)
+  function onClick(p1,p2,p3,p4){
+    console.log(`p1 is ${JSON.stringify(p1, null, 2)}`)
+    console.log(`p2 is ${JSON.stringify(p2, null, 2)}`)
+    console.log(`p3 is ${JSON.stringify(p3, null, 2)}`)
+    console.log(`p4 is ${JSON.stringify(p4, null, 2)}`)
   }
-
 </script>
 
 <template>
@@ -218,77 +232,39 @@
     <UMain>
       <div class="flex">
         <div class="flex flex-col p-1">
-          <UButton @click="updateView" class="m-1"
-          color="neutral" variant="outline">
-            Отобразить задачи
+          <UButton @click="updateView"
+            class="m-1 transition-all duration-150 transform active:scale-95 disabled:bg-gray-100"
+            color="neutral" variant="outline" >
+              Отобразить задачи
           </UButton>
-          <UButton @click="sendTask(newTask)" class="m-1"
-          color="neutral" variant="outline" type="submith">
-            Записать задачу
+          <UButton @click="sendTask(newTask)" 
+            class="m-1 transition-all duration-150 transform active:scale-95 disabled:bg-gray-100"
+            color="neutral" variant="outline">
+              Записать задачу
+          </UButton>
+          <UButton @click="updateTask(newTask)"
+            class="m-1 transition-all duration-150 transform active:scale-95 disabled:bg-gray-100"
+            color="neutral" variant="outline" disabled>
+              Обновить задачу
           </UButton>
         </div>
-        <UContainer>
-          <InputRow v-model="newTask" @submit="onSubmit"/>
-
-            <UTable sticky :data="tasks" :columns="columns" >
-              <template #location-cell="{ row }">
-                    <div>
-                      <div>
-                          <span>Terminal:</span>
-                          <span> {{ row.original.location?.terminal }} </span>
-                      </div>
-                      <div>
-                          <span>Zone:</span>
-                          <span> {{ row.original.location?.zone }}</span>
-                      </div>
-                      <div>
-                          <span>Gate:</span>
-                          <span> {{ row.original.location?.gate }}</span>
-                      </div>
-                  </div>
-              </template>
-              <template #flight-cell=" { row } ">
-                <FlightCell :flight="row.original.flight" />
-              </template>
-              <template #customer_hint-cell=" { row } ">
-                <CustomerHintCell :customer_hint="row.original.customer_hint" />
-              </template>
-            </UTable>
-
-
+        <UContainer class="max-w-8xl">
+          <InputRow v-model="newTask" />
+          <UTable sticky :data="tasks" :columns="columns" @hover="onHover" @click="onClick">
+            <template #location-cell="{ row }">
+              <LocationCell :location="row.original.location" />
+            </template>
+            <template #flight-cell=" { row } ">
+              <FlightCell :flight="row.original.flight" />
+            </template>
+            <template #customer_hint-cell=" { row } ">
+              <CustomerHintCell :customer_hint="row.original.customer_hint" />
+            </template>
+          </UTable>
         </UContainer>
       </div>
     </UMain>
-
-    <UFooter>
-
-    </UFooter>
   </UApp>
 </template>
-
 <style scoped>
-header {
-  height: 3rem;
-  font-size: 2rem;
-}
-@media (min-width: 1024px) {
-}
-.main_area {
-  display: flex;
-
-}
-.button_area {
-  width: 10rem
-
-}
-.task_area {
-
-  width: 100%;
-}
-.output-row {
-  border-bottom: 1px solid black;
-}
-.output-row:last-of-type {
-  border-bottom: none;
-}
 </style>
