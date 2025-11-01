@@ -15,7 +15,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.0.1",
+    "@nuxt/ui": "^4.1.0",
     "@tailwindcss/vite": "^4.1.15",
     "@tanstack/vue-table": "^8.21.3",
     "pinia": "^3.0.3",

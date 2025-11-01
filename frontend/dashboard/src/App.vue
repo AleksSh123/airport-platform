@@ -3,14 +3,18 @@
   const PORT = Number(import.meta.env.VITE_TASK_PORT);
   const TASK_URL = `http://${HOST}:${PORT}/tasks`;
   const MODE = import.meta.env.MODE;
-  import { reactive, ref, h, resolveComponent } from 'vue';
+  
+  import { reactive, ref, h, useTemplateRef } from 'vue';
+  import  UCheckbox  from '@nuxt/ui/runtime/components/Checkbox.vue';
   import TasksHeader from './components/TasksHeader.vue'
   import InputRow from './components/InputRow.vue';
   import OutputRow from './components/OutputRow.vue';
   import FlightCell from './components/FlightCell.vue';
   import CustomerHintCell from './components/CustomerHintCell.vue';
   import LocationCell from './components/LocationCell.vue';
-  const UCheckbox = resolveComponent('UCheckbox')
+  //import { ta } from 'zod/v4/locales';
+  const table = useTemplateRef('table')
+  const hoverRow = ref({});
   const items = ['new', 'assigned']
 
   const task1 = {
@@ -66,7 +70,7 @@
     {
       id: 'select',
       header: ({ table }) =>
-        h(UCheckbox, {
+        h(UCheckbox, { color: "neutral",
           modelValue: table.getIsSomePageRowsSelected()
             ? 'indeterminate'
             : table.getIsAllPageRowsSelected(),
@@ -75,7 +79,7 @@
           'aria-label': 'Select all'
         }),
       cell: ({ row }) =>
-        h(UCheckbox, {
+        h(UCheckbox, { color: "neutral",
           modelValue: row.getIsSelected(),
           'onUpdate:modelValue': (value) => row.toggleSelected(!!value),
           'aria-label': 'Select row'
@@ -211,16 +215,22 @@
     //console.debug(`tasks is: ${JSON.stringify(tasks.value, null, 2)}`);
   }
   function onHover(e, row){
-    console.debug(`e is: ${JSON.stringify(e, null, 2)}`);
-    console.debug(`row is: ${JSON.stringify(row, null, 2)}`);
+    //console.debug(`e is: ${JSON.stringify(e, null, 2)}`);
+    //console.debug(`row is: ${JSON.stringify(row, null, 2)}`);
+    hoverRow.value = row;
   };
-  function onClick(p1,p2,p3,p4){
-    console.log(`p1 is ${JSON.stringify(p1, null, 2)}`)
-    console.log(`p2 is ${JSON.stringify(p2, null, 2)}`)
-    console.log(`p3 is ${JSON.stringify(p3, null, 2)}`)
-    console.log(`p4 is ${JSON.stringify(p4, null, 2)}`)
+  function onClick(){
+    hoverRow.value.toggleSelected(!hoverRow.value.getIsSelected());
+    console.debug(JSON.stringify(table.value.tableApi.options.state.rowSelection, null, 2));
+    console.debug(Object.keys(table.value.tableApi.options.state.rowSelection));
+    const selectedRows = Object.keys(table.value.tableApi.options.state.rowSelection);
+    let selectedIds = [];
+    selectedRows.forEach((item) => {
+      selectedIds.push(table.value.tableApi.getRow(Number(item)).original.id)
+    })
+    console.debug(selectedIds);
   }
-</script>
+  </script>
 
 <template>
   <UApp>
@@ -250,7 +260,7 @@
         </div>
         <UContainer class="max-w-8xl">
           <InputRow v-model="newTask" />
-          <UTable sticky :data="tasks" :columns="columns" @hover="onHover" @click="onClick">
+          <UTable sticky ref="table" :data="tasks" :columns="columns" @hover="onHover" @click="onClick">
             <template #location-cell="{ row }">
               <LocationCell :location="row.original.location" />
             </template>
