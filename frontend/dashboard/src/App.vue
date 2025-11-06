@@ -4,7 +4,7 @@
   const TASK_URL = `http://${HOST}:${PORT}/tasks`;
   const MODE = import.meta.env.MODE;
   
-  import { reactive, ref, h, useTemplateRef } from 'vue';
+  import { reactive, ref, h, useTemplateRef, computed } from 'vue';
   import  UCheckbox  from '@nuxt/ui/runtime/components/Checkbox.vue';
   import TasksHeader from './components/TasksHeader.vue'
   import InputRow from './components/InputRow.vue';
@@ -12,17 +12,14 @@
   import FlightCell from './components/FlightCell.vue';
   import CustomerHintCell from './components/CustomerHintCell.vue';
   import LocationCell from './components/LocationCell.vue';
-  //import { ta } from 'zod/v4/locales';
   const table = useTemplateRef('table')
   const hoverRow = ref({});
-  const items = ['new', 'assigned']
-
-  const task1 = {
-    order_item_id: "222",
-    service_type: "service1",
-    status: "new",
-  }
+  const selectedSingleRow = ref({});
   let tasks = ref([]);
+  const selectedIds = ref([]);
+  const selectedRowIsSingle = computed(() => {
+    return selectedIds.value.length == 1;
+  })
   const newTask = reactive({
     id: "",
     order_item_id: "",
@@ -220,15 +217,24 @@
     hoverRow.value = row;
   };
   function onClick(){
+    selectedIds.value.length = 0;
     hoverRow.value.toggleSelected(!hoverRow.value.getIsSelected());
-    console.debug(JSON.stringify(table.value.tableApi.options.state.rowSelection, null, 2));
-    console.debug(Object.keys(table.value.tableApi.options.state.rowSelection));
-    const selectedRows = Object.keys(table.value.tableApi.options.state.rowSelection);
-    let selectedIds = [];
+    const tableState = table.value.tableApi.getState()
+    console.debug(JSON.stringify(tableState.rowSelection, null, 2));
+    console.debug(Object.keys(tableState.rowSelection));
+    const selectedRows = Object.keys(tableState.rowSelection);
+    //debugger;
     selectedRows.forEach((item) => {
-      selectedIds.push(table.value.tableApi.getRow(Number(item)).original.id)
+      selectedIds.value.push(table.value.tableApi.getRow(Number(item)).original.id)
     })
-    console.debug(selectedIds);
+    console.debug(selectedIds.value);
+    console.debug(selectedRowIsSingle.value)
+    if (selectedRowIsSingle.value) {
+      selectedSingleRow.value = table.value.tableApi.getRow(Object.keys(tableState.rowSelection)).original
+    } else {
+      selectedSingleRow.value = {};
+    }
+    console.debug(`selected row: ${JSON.stringify(selectedSingleRow.value, null, 2)}`);
   }
   </script>
 
@@ -259,7 +265,7 @@
           </UButton>
         </div>
         <UContainer class="max-w-8xl">
-          <InputRow v-model="newTask" />
+          <InputRow v-model="newTask" :selectedRowIsSingle="selectedRowIsSingle"/>
           <UTable sticky ref="table" :data="tasks" :columns="columns" @hover="onHover" @click="onClick">
             <template #location-cell="{ row }">
               <LocationCell :location="row.original.location" />
