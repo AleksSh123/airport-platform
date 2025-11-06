@@ -1,12 +1,11 @@
 <script setup>
-    const props = defineProps(['caption']);
+const props = defineProps(['caption'])
 </script>
 <template>
-    <div> {{ caption }}</div>
+  <div>{{ props.caption }}</div>
 </template>
 <style scoped>
-    div {
-
-        overflow: hidden;
-    }
+div {
+  overflow: hidden;
+}
 </style>

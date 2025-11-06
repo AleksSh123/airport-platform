@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "@nuxt/ui";
+@import 'tailwindcss';
+@import '@nuxt/ui';
 #app {
   max-width: 1920px;
   margin: 0 auto;
@@ -14,5 +14,3 @@ a,
   transition: 0.4s;
   padding: 3px;
 }
-
-
